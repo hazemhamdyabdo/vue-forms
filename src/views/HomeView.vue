@@ -4,6 +4,7 @@ import TheWelcome from '../components/TheWelcome.vue'
 
 <template>
   <main>
+    <router-link to="/forms"> click here to see the forms </router-link>
     <TheWelcome />
   </main>
 </template>

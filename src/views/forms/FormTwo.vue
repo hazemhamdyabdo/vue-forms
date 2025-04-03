@@ -1,21 +1,17 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { useMultiStepForm } from '@/composables/useMultiStepForm'
+import { ref } from 'vue'
 import { z } from 'zod'
 
+const { state } = useMultiStepForm()
+
 const errors = ref<Record<string, string>>({})
-const state = reactive({
-  string: '',
-  number: 0,
-  pet: [''], // Single select is stored as an array of one element
-  accepted: false, // Checkbox
-  colors: [] as string[], // Multiple checkboxes
-})
 
 const formSchema = z.object({
   string: z.string().min(3, 'At least 3 characters'),
   number: z.number().min(3, 'At least 3 number characters'),
   pet: z.enum(['dog', 'cat', 'hamster', 'parrot', 'spider', 'goldfish']),
-  accepted: z.boolean(),
+  accepted: z.literal(true, { errorMap: () => ({ message: 'You must accept' }) }),
   colors: z.array(z.string()).min(1, 'At least one color'),
 })
 
@@ -30,6 +26,8 @@ const validateState = () => {
   errors.value = {}
   return true
 }
+
+defineExpose({ validateState })
 </script>
 
 <template>
@@ -52,7 +50,7 @@ const validateState = () => {
     <!-- Enum (Select one pet) -->
     <div>
       <label>Pet (Single Select)</label>
-      <select v-model="state.pet[0]" class="border p-1">
+      <select v-model="state.pet" class="border p-1">
         <option disabled value="">Select a pet</option>
         <option>dog</option>
         <option>cat</option>
@@ -83,7 +81,5 @@ const validateState = () => {
       </div>
       <div v-if="errors.colors" class="text-red-500 text-sm">{{ errors.colors }}</div>
     </div>
-
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit</button>
   </form>
 </template>
