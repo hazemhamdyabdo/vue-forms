@@ -60,7 +60,8 @@
 
 body {
   min-height: 100vh;
-  color: var(--color-text);
+  padding: 2rem;
+  color: var(--color-white);
   background: var(--color-background);
   transition:
     color 0.5s,

@@ -19,6 +19,23 @@ const router = createRouter({
       name: 'zod',
       component: () => import('../views/ZodValidation.vue'),
     },
+    {
+      path: '/forms',
+      name: 'forms',
+      component: () => import('../views/forms/index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'form-1',
+          component: () => import('../views/forms/FormOne.vue'),
+        },
+        {
+          path: 'form-2',
+          name: 'form-2',
+          component: () => import('../views/forms/FormTwo.vue'),
+        },
+      ],
+    },
   ],
 })
 
